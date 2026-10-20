@@ -3,6 +3,7 @@ package kz.aitu.routeoptimizer.service;
 import kz.aitu.routeoptimizer.domain.Route;
 
 import java.util.LinkedHashMap;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 
@@ -19,6 +20,6 @@ public record RouteDecision(
         Objects.requireNonNull(selectedRoute, "selectedRoute must not be null");
         Objects.requireNonNull(explanation, "explanation must not be null");
         Objects.requireNonNull(rejectedRoutes, "rejectedRoutes must not be null");
-        rejectedRoutes = Map.copyOf(new LinkedHashMap<>(rejectedRoutes));
+        rejectedRoutes = Collections.unmodifiableMap(new LinkedHashMap<>(rejectedRoutes));
     }
 }

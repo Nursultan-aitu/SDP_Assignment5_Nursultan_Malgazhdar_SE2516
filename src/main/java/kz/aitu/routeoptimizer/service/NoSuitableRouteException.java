@@ -1,6 +1,7 @@
 package kz.aitu.routeoptimizer.service;
 
 import java.util.LinkedHashMap;
+import java.util.Collections;
 import java.util.Map;
 
 public class NoSuitableRouteException extends RuntimeException {
@@ -9,7 +10,7 @@ public class NoSuitableRouteException extends RuntimeException {
 
     public NoSuitableRouteException(String message, Map<String, String> rejectedRoutes) {
         super(message);
-        this.rejectedRoutes = Map.copyOf(new LinkedHashMap<>(rejectedRoutes));
+        this.rejectedRoutes = Collections.unmodifiableMap(new LinkedHashMap<>(rejectedRoutes));
     }
 
     public Map<String, String> rejectedRoutes() {
