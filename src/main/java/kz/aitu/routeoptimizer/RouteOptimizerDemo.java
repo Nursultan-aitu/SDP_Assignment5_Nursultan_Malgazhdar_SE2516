@@ -14,6 +14,7 @@ import kz.aitu.routeoptimizer.strategy.CheapestRouteStrategy;
 import kz.aitu.routeoptimizer.strategy.EcoRouteStrategy;
 import kz.aitu.routeoptimizer.strategy.FastestRouteStrategy;
 import kz.aitu.routeoptimizer.strategy.RouteStrategy;
+import kz.aitu.routeoptimizer.strategy.SafestRouteStrategy;
 
 import java.util.List;
 import java.util.Map;
@@ -47,6 +48,9 @@ public final class RouteOptimizerDemo {
         printDecision(planner.plan(routes, request));
 
         planner.setStrategy(new BalancedRouteStrategy());
+        printDecision(planner.plan(routes, request));
+
+        planner.setStrategy(new SafestRouteStrategy());
         printDecision(planner.plan(routes, request));
     }
 
@@ -83,7 +87,8 @@ public final class RouteOptimizerDemo {
                 new FastestRouteStrategy(),
                 new CheapestRouteStrategy(),
                 new EcoRouteStrategy(),
-                new BalancedRouteStrategy()
+                new BalancedRouteStrategy(),
+                new SafestRouteStrategy()
         ));
         comparison.compare(routes, request).values().forEach(RouteOptimizerDemo::printDecision);
     }
