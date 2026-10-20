@@ -1,0 +1,37 @@
+@startuml
+actor User
+participant RouteOptimizerDemo as App
+participant StrategySelector as Selector
+participant RoutePlanner as Planner
+participant RouteStrategy as Strategy
+participant RouteEligibility as Eligibility
+participant RouteMetrics as Metrics
+
+User -> App: submit DeliveryRequest
+App -> Selector: select(request)
+Selector --> App: concrete RouteStrategy
+App -> Planner: setStrategy(strategy)
+App -> Planner: plan(routes, request)
+Planner -> Strategy: selectRoute(routes, request)
+Strategy -> Eligibility: evaluate(routes, request)
+
+loop every candidate route
+  Eligibility -> Metrics: totalCost(route, request)
+  Eligibility -> Metrics: adjustedMinutes(route)
+  Eligibility --> Eligibility: reject constraint violations
+end
+
+alt no eligible routes
+  Eligibility --> Strategy: NoSuitableRouteException
+  Strategy --> Planner: exception with rejection reasons
+  Planner --> App: exception
+else eligible routes exist
+  Eligibility --> Strategy: eligible routes + rejection reasons
+  loop every eligible route
+    Strategy -> Metrics: calculate strategy metrics
+  end
+  Strategy --> Planner: RouteDecision
+  Planner --> App: selected route, score, explanation
+  App --> User: result and rejected routes
+end
+@enduml

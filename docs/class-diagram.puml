@@ -1,0 +1,67 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+package domain {
+  class Location <<record>>
+  class Route <<record>>
+  class DeliveryRequest <<record>>
+  enum DeliveryPriority
+  enum TrafficLevel
+  enum WeatherCondition
+}
+
+package strategy {
+  interface RouteStrategy {
+    +name(): String
+    +selectRoute(routes, request): RouteDecision
+  }
+  abstract class AbstractScoredStrategy
+  class FastestRouteStrategy
+  class CheapestRouteStrategy
+  class EcoRouteStrategy
+  class BalancedRouteStrategy
+  class SafestRouteStrategy
+  class BalancedWeights <<record>>
+}
+
+package service {
+  class RoutePlanner {
+    -strategy: RouteStrategy
+    +setStrategy(strategy)
+    +plan(routes, request): RouteDecision
+  }
+  class RouteEligibility
+  class RouteMetrics
+  class RouteDecision <<record>>
+  class StrategyComparisonService
+  class NoSuitableRouteException
+}
+
+package selector {
+  class StrategySelector
+  class StrategyRule <<record>>
+}
+
+Route "*" --> "1" Location : origin/destination
+Route --> TrafficLevel
+Route --> WeatherCondition
+DeliveryRequest --> DeliveryPriority
+
+RouteStrategy <|.. AbstractScoredStrategy
+AbstractScoredStrategy <|-- FastestRouteStrategy
+AbstractScoredStrategy <|-- CheapestRouteStrategy
+AbstractScoredStrategy <|-- EcoRouteStrategy
+AbstractScoredStrategy <|-- SafestRouteStrategy
+RouteStrategy <|.. BalancedRouteStrategy
+BalancedRouteStrategy --> BalancedWeights
+
+RoutePlanner --> RouteStrategy : depends on abstraction
+RouteStrategy ..> RouteEligibility
+RouteStrategy ..> RouteMetrics
+RouteStrategy --> RouteDecision : creates
+RouteEligibility ..> NoSuitableRouteException : throws
+StrategyComparisonService o-- "1..*" RouteStrategy
+StrategySelector o-- "1..*" StrategyRule
+StrategyRule ..> RouteStrategy : creates
+@enduml
