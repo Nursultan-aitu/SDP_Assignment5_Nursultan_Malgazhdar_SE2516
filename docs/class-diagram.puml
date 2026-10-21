@@ -43,6 +43,11 @@ package selector {
   class StrategyRule <<record>>
 }
 
+package ui {
+  class RouteOptimizerGui
+  class RouteOptimizerFrame
+}
+
 Route "*" --> "1" Location : origin/destination
 Route --> TrafficLevel
 Route --> WeatherCondition
@@ -64,4 +69,8 @@ RouteEligibility ..> NoSuitableRouteException : throws
 StrategyComparisonService o-- "1..*" RouteStrategy
 StrategySelector o-- "1..*" StrategyRule
 StrategyRule ..> RouteStrategy : creates
+RouteOptimizerGui ..> RouteOptimizerFrame : opens
+RouteOptimizerFrame --> StrategySelector
+RouteOptimizerFrame --> RoutePlanner
+RouteOptimizerFrame --> StrategyComparisonService
 @enduml

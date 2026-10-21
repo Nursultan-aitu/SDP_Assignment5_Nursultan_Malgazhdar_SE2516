@@ -8,15 +8,34 @@ Assignment 5 demonstrates the Strategy design pattern in a delivery route optimi
 - Maven 3.9+
 - JUnit 5 (downloaded by Maven)
 
+## Desktop interface
+
+The project includes a Java Swing interface with:
+
+- request ID, priority, budget, deadline, emission limit, and eco-preference inputs;
+- automatic strategy selection or manual selection of any strategy;
+- a sortable table containing all eight candidate routes;
+- a **Find best route** action with selected-route highlighting;
+- a **Compare all strategies** mode;
+- decision scores, calculations, and rejected-route explanations;
+- input validation and explicit no-route error output.
+
 ## Run the project
 
+Build and open the graphical interface:
+
 ```bash
-mvn clean test
-mvn package
-java -cp target/classes kz.aitu.routeoptimizer.RouteOptimizerDemo
+mvn clean package
+java -jar target/smart-delivery-route-optimizer-1.0.0.jar
 ```
 
-In IntelliJ IDEA, open `pom.xml` as a Maven project and run `RouteOptimizerDemo.main()`.
+In IntelliJ IDEA, open `pom.xml` as a Maven project and run `RouteOptimizerGui.main()`.
+
+The original console demonstration remains available:
+
+```bash
+java -cp target/classes kz.aitu.routeoptimizer.RouteOptimizerDemo
+```
 
 ## Implemented strategies
 
